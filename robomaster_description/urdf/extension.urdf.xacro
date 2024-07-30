@@ -13,7 +13,7 @@
       <visual name="extension_base">
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
-          <mesh filename="package://robomaster_description/meshes/extension_base.dae" scale="1.0 1.0 1.0"/>
+          <mesh filename="file:$(find robomaster_description)/meshes/extension_base.dae" scale="1.0 1.0 1.0"/>
         </geometry>
         <material name="metal"/>
       </visual>
@@ -21,7 +21,7 @@
         <visual name="extension_support">
           <origin xyz="-0.078582 0.0075392 0.0046459" rpy="0 0 0"/>
           <geometry>
-            <mesh filename="package://robomaster_description/meshes/extension_support.dae" scale="1.0 1.0 1.0"/>
+            <mesh filename="file:$(find robomaster_description)/meshes/extension_support.dae" scale="1.0 1.0 1.0"/>
           </geometry>
           <material name="metal"/>
         </visual>

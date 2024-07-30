@@ -13,7 +13,7 @@
     <visual name="${name}_hit_sensor">
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://robomaster_description/meshes/hit_sensor.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="file:$(find robomaster_description)/meshes/hit_sensor.dae" scale="1.0 1.0 1.0"/>
       </geometry>
       <material name="hit_detector"/>
     </visual>
@@ -28,7 +28,7 @@
     <visual name="${name}_led">
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://robomaster_description/meshes/led.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="file:$(find robomaster_description)/meshes/led.dae" scale="1.0 1.0 1.0"/>
       </geometry>
       <material name="led_light"/>
     </visual>
