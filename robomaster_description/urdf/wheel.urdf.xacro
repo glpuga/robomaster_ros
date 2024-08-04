@@ -29,7 +29,7 @@
       <collision>
         <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
         <geometry>
-          <cylinder radius="0.05" length="0.042"/>
+          <cylinder radius="0.05" length="0.005"/>
         </geometry>
       </collision>
     </link>
