@@ -115,8 +115,18 @@ class Chassis(Module):
             self.logger.info("[Chassis] Topic cmd_vel will control wheel speeds")
         else:
             self.logger.info("[Chassis] Topic cmd_vel will control chassis twist")
-        self.odom_frame = node.tf_frame('odom')
-        self.base_link = node.tf_frame('base_link')
+
+        desc = rcl_interfaces.msg.ParameterDescriptor(description=("Name of the odometry frame"))
+        self.odom_frame: str = node.declare_parameter("chassis.odom_frame", '', descriptor=desc).value
+        desc = rcl_interfaces.msg.ParameterDescriptor(description=("Name of the base_link frame"))
+        self.base_link: str = node.declare_parameter("chassis.base_link_frame", '', descriptor=desc).value
+        self.odom_frame = self.odom_frame if self.odom_frame == '' else node.tf_frame('odom')
+        self.base_link = self.base_link if self.base_link == '' else node.tf_frame('base_link')
+
+        desc = rcl_interfaces.msg.ParameterDescriptor(
+            description=("Broadcast the odom to base_link transform"))
+        self.publish_tf: bool = node.declare_parameter("chassis.publish_tf", True, descriptor=desc).value
+
         desc = rcl_interfaces.msg.ParameterDescriptor(
             description=(
                 "When enabled, publishes :ros:pub:`odom` twist in the odom frame"))
@@ -442,11 +452,12 @@ class Chassis(Module):
         self.imu_msg.header.stamp = stamp
         self.imu_pub.publish(self.imu_msg)
         position = self.odom_msg.pose.pose.position
-        translation = self.transform_msg.transform.translation
-        (translation.x, translation.y, translation.z) = (position.x, position.y, position.z)
-        self.transform_msg.transform.rotation = self.odom_msg.pose.pose.orientation
-        self.transform_msg.header.stamp = stamp
-        self.node.tf_broadcaster.sendTransform(self.transform_msg)
+        if self.publish_tf:
+            translation = self.transform_msg.transform.translation
+            (translation.x, translation.y, translation.z) = (position.x, position.y, position.z)
+            self.transform_msg.transform.rotation = self.odom_msg.pose.pose.orientation
+            self.transform_msg.header.stamp = stamp
+            self.node.tf_broadcaster.sendTransform(self.transform_msg)
 
     # (speeds + angles + timestamps + states)
     def updated_esc(self, msg: Esc) -> None:
